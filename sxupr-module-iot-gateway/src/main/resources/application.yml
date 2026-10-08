@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: sxupr-module-iot-gateway
+
+  main:
+    web-application-type: none
+
+  kafka:
+    bootstrap-servers: ${KAFKA_ADDR:localhost:19092}
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+      acks: all
+
+iot:
+  gateway:
+    broker-uri: ${MQTT_BROKER_URI:tcp://localhost:11883}
+#    server-base-url: http://localhost:18082
+
+  grpc:
+    client:
+      host: ${IOT_SERVER_GRPC_HOST:localhost}
+      port: ${IOT_SERVER_GRPC_PORT:19090}
+      deadline-ms: 2000

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pump.iot.api;
+
+option java_multiple_files = true;
+
+option java_package =
+    "cn.sx.sxupr.module.iot.api.grpc";
+
+option java_outer_classname =
+    "IotDeviceInternalProto";
+
+
+service IotDeviceInternalService {
+
+  rpc GetDeviceAccessInfo(
+      GetDeviceAccessInfoRequest
+      )
+      returns (
+      GetDeviceAccessInfoResponse
+      );
+
+}
+
+
+message GetDeviceAccessInfoRequest {
+
+  string product_key = 1;
+
+  string device_name = 2;
+
+}
+
+
+message GetDeviceAccessInfoResponse {
+
+  bool found = 1;
+
+  int64 device_id = 2;
+
+  int64 product_id = 3;
+
+  int64 thing_model_version_id = 4;
+
+  int32 thing_model_version = 5;
+
+}

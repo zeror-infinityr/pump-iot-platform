@@ -1,0 +1,49 @@
+server:
+  port: 18081
+
+
+spring:
+  application:
+    name:
+      sxupr-api-gateway
+
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr:
+          ${NACOS_ADDR:localhost:18848}
+
+      config:
+        server-addr:
+          ${NACOS_ADDR:localhost:18848}
+        group:
+          PUMP_IOT
+
+
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: iot-server
+              uri:
+                lb://sxupr-module-iot-server
+              predicates:
+                - Path=/api/iot/**
+
+
+  config:
+    import:
+      - optional:nacos:sxupr-api-gateway.yml?group=PUMP_IOT&refreshEnabled=true
+
+management:
+  endpoint:
+    gateway:
+      access:
+        read-only
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          health,gateway

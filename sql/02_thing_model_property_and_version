@@ -1,0 +1,66 @@
+CREATE TABLE iot_thing_model_version (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+    product_id BIGINT NOT NULL COMMENT '产品ID',
+
+    version INT NOT NULL COMMENT '物模型版本号',
+
+    description VARCHAR(255) NULL COMMENT '版本说明',
+
+    create_time DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    update_time DATETIME(3) NOT NULL
+        DEFAULT CURRENT_TIMESTAMP(3)
+        ON UPDATE CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (id),
+
+    UNIQUE KEY uk_product_version (product_id, version),
+
+    KEY idx_product_id (product_id)
+
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_0900_ai_ci
+  COMMENT='IoT物模型版本表';
+
+  CREATE TABLE iot_thing_model_property (
+      id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+      thing_model_version_id BIGINT NOT NULL COMMENT '物模型版本ID',
+
+      identifier VARCHAR(64) NOT NULL COMMENT '属性标识符',
+
+      name VARCHAR(64) NOT NULL COMMENT '属性名称',
+
+      data_type VARCHAR(32) NOT NULL COMMENT '数据类型',
+
+      unit VARCHAR(32) NULL COMMENT '单位',
+
+      min_value DECIMAL(20,6) NULL COMMENT '最小值',
+
+      max_value DECIMAL(20,6) NULL COMMENT '最大值',
+
+      required_flag TINYINT NOT NULL DEFAULT 1 COMMENT '是否必需：0否 1是',
+
+      create_time DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+      update_time DATETIME(3) NOT NULL
+          DEFAULT CURRENT_TIMESTAMP(3)
+          ON UPDATE CURRENT_TIMESTAMP(3),
+
+      PRIMARY KEY (id),
+
+      UNIQUE KEY uk_version_identifier (
+          thing_model_version_id,
+          identifier
+      ),
+
+      KEY idx_thing_model_version_id (
+          thing_model_version_id
+      )
+
+  ) ENGINE=InnoDB
+    DEFAULT CHARSET=utf8mb4
+    COLLATE=utf8mb4_0900_ai_ci
+    COMMENT='IoT物模型属性表';

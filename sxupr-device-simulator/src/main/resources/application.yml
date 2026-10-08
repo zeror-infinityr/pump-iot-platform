@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: sxupr-device-simulator
+
+  main:
+    web-application-type: none
+
+#simulator:
+#  broker-uri: tcp://localhost:11883
+#  product-key: pk_b644308efb8d
+#  device-name: pump-001
+#  interval-ms: 5000
+
+simulator:
+  broker-uri: ${MQTT_BROKER_URI:tcp://localhost:11883}
+  product-key: pk_b644308efb8d
+  device-name: pump-001
+  interval-ms: 5000
+  force-high-water: false

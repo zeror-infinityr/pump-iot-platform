@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: sxupr-module-iot-server
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:localhost:18848}
+
+      config:
+        server-addr: ${NACOS_ADDR:localhost:18848}
+        group: PUMP_IOT
+
+  config:
+    import:
+      - optional:nacos:sxupr-module-iot-server.yml?group=PUMP_IOT&refreshEnabled=true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:16379}
+      password: pump_iot_redis
+      database: 0
+      connect-timeout: 2s
+      timeout: 2s
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:13306}/pump_iot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: pump_iot
+    password: pump_iot_dev
+
+  kafka:
+    bootstrap-servers: ${KAFKA_ADDR:localhost:19092}
+
+    listener:
+      ack-mode: record
+
+    consumer:
+      group-id: iot-server-property-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+tdengine:
+  url: jdbc:TAOS-WS://${TDENGINE_HOST:localhost}:${TDENGINE_PORT:16041}/pump_iot_ts
+  username: root
+  password: taosdata
+  driver-class-name: com.taosdata.jdbc.ws.WebSocketDriver
+
+postgis:
+  url: jdbc:postgresql://${POSTGIS_HOST:localhost}:${POSTGIS_PORT:15432}/pump_iot_geo
+  username: pump_iot_geo
+  password: pump_iot_geo_dev
+  driver-class-name: org.postgresql.Driver
+
+iot:
+  monitor:
+    offline-timeout-seconds: 15
+    high-water-threshold: 3.2
+    high-water-consecutive-count: 2
+
+  command:
+    timeout-seconds: 30
+
+  grpc:
+    server:
+      port: 19090
+
+server:
+  port: 18082
+
